@@ -1,0 +1,41 @@
+#include <LiquidCrystal.h>
+#include <DHT.h>
+
+#define DHTPIN 7
+#define DHTTYPE    DHT11
+DHT dht(DHTPIN, DHTTYPE);
+
+const int rs = 8, en = 9, d4 = 10, d5 = 11, d6 = 12, d7 = 13;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+int rood = 4;
+int pot = A0;
+
+void setup() {
+  lcd.begin(16, 2);
+  dht.begin();
+  pinMode(rood, OUTPUT);
+  pinMode(A0, INPUT);
+}
+
+void loop() {
+  float t = dht.readTemperature();
+  pot = analogRead(A0);
+  pot = float(map(pot, 0, 1023, 310, 100)) / 10;
+
+  lcd.setCursor(0, 0);
+  lcd.print("Temp 1: ");
+  lcd.print(pot);
+  lcd.print(".00");
+
+  lcd.setCursor(0, 1);
+  lcd.print("Temp 2: ");
+  lcd.print(t);
+
+  if (t <= pot) {
+    digitalWrite(rood, HIGH);
+  }
+  else {
+    digitalWrite(rood, LOW);
+  }
+}
