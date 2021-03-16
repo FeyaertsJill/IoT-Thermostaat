@@ -12,9 +12,9 @@ LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 int rood = 15;
 int pot = 32;
 
-char auth[] = "-nRVaWlzQUpuYDHWSd4x_LsCrkPwUBFR";
+char auth[] = "BLYNK-KEY";
 char ssid[] = "LinksysFeyaerts2.4GHz";
-char pass[] = "F3yaerts";
+char pass[] = "WACHTWOORD";
 
 void setup() {
   lcd.begin(16, 2);
