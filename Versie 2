@@ -1,0 +1,48 @@
+#include <LiquidCrystal.h>
+#include <DHT.h>
+#include <BlynkSimpleEsp32.h>
+
+#define DHTPIN 2
+#define DHTTYPE    DHT11
+DHT dht(DHTPIN, DHTTYPE);
+
+const int rs = 22, en = 23, d4 = 5, d5 = 18, d6 = 19, d7 = 21;
+LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
+
+int rood = 15;
+int pot = 32;
+
+char auth[] = "-nRVaWlzQUpuYDHWSd4x_LsCrkPwUBFR";
+char ssid[] = "LinksysFeyaerts2.4GHz";
+char pass[] = "F3yaerts";
+
+void setup() {
+  lcd.begin(16, 2);
+  dht.begin();
+  Blynk.begin(auth, ssid, pass);
+  pinMode(rood, OUTPUT);
+  pinMode(pot, INPUT);
+}
+
+void loop() {
+  float t = dht.readTemperature();
+  pot = analogRead(32);
+  pot = float(map(pot, 0, 4095, 310, 100)) / 10;
+  Blynk.run();
+
+  lcd.setCursor(0, 0);
+  lcd.print("Temp 1: ");
+  lcd.print(pot);
+  lcd.print(".00");
+
+  lcd.setCursor(0, 1);
+  lcd.print("Temp 2: ");
+  lcd.print(t);
+
+  if (t <= pot) {
+    digitalWrite(rood, HIGH);
+  }
+  else {
+    digitalWrite(rood, LOW);
+  }
+}
